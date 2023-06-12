@@ -1,27 +1,57 @@
 import axios from "axios";
 import useSWR from 'swr';
 
-const API_BASE_URL = "https://parseapi.back4app.com/classes/"; // altere para a sua URL de API
-
-const instance = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "X-Parse-Application-Id": "aLQLnG7jD35CFlE0VwFDPgHPkb8hXBaMOwi0vHWn",
-    "X-Parse-REST-API-Key": "HxqwhdGFlWjPwtK09DoNkjTX1wCMlO6Hkg5dSrh7",
-  },
-});
-
+const API_BASE_URL = "https://backend-aos-production.up.railway.app"; // altere para a sua URL de API
 
 export const fetchDados = async () => {
-  const response = await instance.get("Times");
-  return response.data.results;
+  try {
+    const response = await axios.get(`${API_BASE_URL}/times`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const useDados = () => {
-  const { data, error, mutate } = useSWR('dados', fetchDados, { refreshInterval: 10000 });
+  const { data, error, mutate } = useSWR('dados', fetchDados);
 
   return {
     dados: data,
+    isLoading: !error && !data,
+    isError: error,
+    atualizarDados: mutate,
+  };
+};
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const fetchDadosElenco = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/elenco`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const useDadosElenco = () => {
+  const { data, error, mutate } = useSWR('dadosElenco', fetchDadosElenco);
+
+  return {
+    dadosElenco: data,
     isLoading: !error && !data,
     isError: error,
     atualizarDados: mutate,
