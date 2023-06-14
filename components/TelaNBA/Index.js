@@ -25,8 +25,8 @@ const TelaNBA = ({}) => {
 
   const navigation = useNavigation();
 
-  const handleTimePress = (time) => {
-    navigation.navigate('TelaElencos', { time });
+  const handleTimePress = (titulos) => {
+    navigation.navigate('TelaTitulos', { titulos });
   };
 
   return (
