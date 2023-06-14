@@ -1,11 +1,11 @@
 import axios from "axios";
 import useSWR from 'swr';
 
-const API_BASE_URL = "https://backend-aos-production.up.railway.app"; // altere para a sua URL de API
+const API_BASE_URL = "https://backend-aos-production.up.railway.app/"; // altere para a sua URL de API
 
 export const fetchDados = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/times`, {
+    const response = await axios.get(${API_BASE_URL}/times, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -31,9 +31,9 @@ export const useDados = () => {
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const fetchDadosElenco = async () => {
+export const fetchDadosTitulos = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/elenco`, {
+    const response = await axios.get(${API_BASE_URL}/titulos, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -47,13 +47,13 @@ export const fetchDadosElenco = async () => {
   }
 };
 
-export const useDadosElenco = () => {
-  const { data, error, mutate } = useSWR('dadosElenco', fetchDadosElenco);
+export const useDadosTitulos = () => {
+  const { data, error, mutate } = useSWR('dadosTitulos', fetchDadosTitulos);
 
   return {
-    dadosElenco: data,
-    isLoading: !error && !data,
-    isError: error,
-    atualizarDados: mutate,
+    dadosTitulos: data,
+    isLoadingTitulos: !error && !data,
+    isErrorTitulos: error,
+    atualizarDadosTitulos: mutate,
   };
 };
