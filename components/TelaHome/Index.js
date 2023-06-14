@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
-import { Button } from '@rneui/themed';
-
+import { StyleSheet, View, Text, Image, ScrollView, Button } from 'react-native';
+import useThemeStore from '../../assets/themeStore';
 
 const TelaHome = ({ navigation }) => {
   
@@ -24,27 +23,39 @@ const TelaHome = ({ navigation }) => {
     },
     // ...adicionar mais cards conforme necessário
   ];
+  const { theme, setTheme } = useThemeStore();
 
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme); // Altere o tema no estado
+  };
+
+  const buttonText = theme === "light" ? "dark" : "light";
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>TelaHome</Text>
+    <View style={styles[theme].container}>
+      <View style={styles[theme].header}>
+        <Text style={styles[theme].title}>TelaHome</Text>
       </View>
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.text}>
+      <ScrollView contentContainerStyle={styles[theme].content}>
+        <Text style={styles[theme].text}>
           Aqui você verá as notícias esportivas do Brasil e do mundo em primeira mão! Basquete, Futebol e tudo sobre o mercado de transferências você vê aqui!
         </Text>
         {cards.map((card) => (
-          <View style={styles.card} key={card.id}>
-            <Image source={{ uri: card.image }} style={styles.cardImage} />
-            <Text style={styles.cardText}>{card.text}</Text>
+          <View style={styles[theme].card} key={card.id}>
+            <Image source={{ uri: card.image }} style={styles[theme].cardImage} />
+            <Text style={styles[theme].cardText}>{card.text}</Text>
           </View>
         ))}
       </ScrollView>
       <View style={styles.footer}>
+        <Button style={styles[theme].modo} title={buttonText} onPress={toggleTheme} />
         <Button
           title="Ir para a tela da NBA"
           onPress={() => navigation.navigate('TelaNBA')}
+        />
+        <Button
+          title="Ir para a tela de Futebol Brasileiro"
+          onPress={() => navigation.navigate('TelaFutebolBrasileiro')}
         />
       </View>
     </View>
@@ -52,6 +63,54 @@ const TelaHome = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  dark:{container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: 'black',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color:"white",
+  },
+  themeButton: {
+    padding: 5,
+    borderRadius: 20,
+  },
+  content: {
+    flexGrow: 1,
+  },
+  text: {
+    marginBottom: 20,
+    color:"white",
+  },
+  card: {
+    marginBottom: 10,
+  },
+  cardImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    borderRadius: 10,
+  },
+  cardText: {
+    fontSize: 16,
+    marginTop: 10,
+    color:"white",
+  },
+  footer: {
+    alignSelf: 'flex-end',
+    marginTop: 'auto',
+    marginBottom: 10,  
+  },
+    },
+    light:{
   container: {
     flex: 1,
     padding: 10,
@@ -95,6 +154,7 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     marginBottom: 10,
   },
+}
 });
 
 export default TelaHome;
